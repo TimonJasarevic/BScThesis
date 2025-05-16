@@ -1,5 +1,7 @@
 {
   "MixingRule": "Lorentz-Berthelot",
+  "TruncationMethod" : "shifted",
+  "TailCorrections" : true,
   "PseudoAtoms": [
     {
       "name": "C_co2",
