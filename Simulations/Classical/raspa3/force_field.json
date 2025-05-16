@@ -1,0 +1,91 @@
+{
+  "MixingRule": "Lorentz-Berthelot",
+  "PseudoAtoms": [
+    {
+      "name": "C_co2",
+      "framework": false,
+      "print_to_output": true,
+      "element": "C",
+      "print_as": "C",
+      "mass": 12.01,
+      "charge": 0.6512
+    },
+    {
+      "name": "O_co2",
+      "framework": false,
+      "print_to_output": true,
+      "element": "O",
+      "print_as": "O",
+      "mass": 16.00,
+      "charge": -0.3256
+    },
+    {
+      "name": "C",
+      "framework": true,
+      "print_to_output": false,
+      "element": "C",
+      "print_as": "C",
+      "mass": 12.01,
+      "charge": 0.0
+    },
+    {
+      "name": "B",
+      "framework": true,
+      "print_to_output": false,
+      "element": "B",
+      "print_as": "B",
+      "mass": 10.81,
+      "charge": 0.0
+    },
+    {
+      "name": "O",
+      "framework": true,
+      "print_to_output": false,
+      "element": "O",
+      "print_as": "O",
+      "mass": 16.00,
+      "charge": 0.0
+    },
+    {
+      "name": "H",
+      "framework": true,
+      "print_to_output": false,
+      "element": "H",
+      "print_as": "H",
+      "mass": 1.008,
+      "charge": 0.0
+    }
+  ],
+  "SelfInteractions": [
+    {
+      "name": "C_co2",
+      "type": "lennard-jones",
+      "parameters": [27.0, 2.8]
+    },
+    {
+      "name": "O_co2",
+      "type": "lennard-jones",
+      "parameters": [79.0, 3.05]
+    },
+    {
+      "name": "C",
+      "type": "lennard-jones",
+      "parameters": [47.0, 3.4]
+    },
+    {
+      "name": "B",
+      "type": "lennard-jones",
+      "parameters": [50.0, 3.5]
+    },
+    {
+      "name": "O",
+      "type": "lennard-jones",
+      "parameters": [48.0, 3.0]
+    },
+    {
+      "name": "H",
+      "type": "lennard-jones",
+      "parameters": [7.0, 2.5]
+    }
+  ]
+}
