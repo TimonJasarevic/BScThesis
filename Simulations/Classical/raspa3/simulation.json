@@ -1,0 +1,39 @@
+{
+  "SimulationType": "MolecularDynamics",
+  "NumberOfCycles": 100000000,
+  "NumberOfInitializationCycles": 1000,
+  "PrintEvery": 1000,
+  "Systems": [
+    {
+      "Type": "Framework",
+      "Name": "COF-1.cif",
+      "NumberOfUnitCells": [2, 2, 6],
+      "ExternalTemperature": 298.15,
+      "ExternalPressure": 101300.0,
+      "ChargeMethod": "Ewald",
+      "CutOff": 12.0,
+      "Ensemble": "NVT",
+      "OutputPDBMovie" : false,
+      "SampleMovieEvery" : 10,
+      "NumberOfBlockElementsMSD": 25,
+      "TimeStep": 0.001,
+
+      "ComputeMSD": false,
+      "SampleMSDEvery": 10,
+      "WriteMSDEvery": 50,
+
+      "ComputeConventionalRDF": true,
+      "SampleConventionalRDFEvery": 10,
+      "WriteConventionalRDFEvery": 50
+    }
+  ],
+  "Components": [
+    {
+      "Name": "CO2",
+      "TranslationProbability": 0.5,
+      "RotationProbability": 0.5,
+      "ReinsertionProbability": 0.5,
+      "CreateNumberOfMolecules": 20
+    }
+  ]
+}
