@@ -94,7 +94,6 @@ def ml_co2_framework_forces() -> np.ndarray:
 
         species = torch.cat([fw_species_sub, mol_species_t]).unsqueeze(0)
         coords  = torch.cat([fw_coords_sub, mol_coords_t]).unsqueeze(0)
-        coords.requires_grad_(True)
 
         # Step 3: Evaluate energy and compute gradient (forces)
         energy = model((species, coords), cell=cell_vectors, pbc=pbc_mask).energies
@@ -118,7 +117,7 @@ def run_step() -> None:
     """
     md.runFirstHalfStep()
 
-    md.explicitGradients()              # Classical LJ forces: CO₂–CO₂ only
+    md.explicitGradients(includeFrameworkMolecule=False) # Classical LJ forces: CO₂–CO₂ only
     lj_forces = md.getForces()
 
     ani_forces = ml_co2_framework_forces()
