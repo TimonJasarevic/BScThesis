@@ -7,6 +7,15 @@ import numpy as np
 import raspalib
 import gc
 
+import shutil
+from pathlib import Path
+
+# --- overwrite simulation.json with FWSim.json ---------------------------- #
+root_dir = Path(__file__).resolve().parent
+src = root_dir / "saved_simulations" / "FWSim.json"
+dst = root_dir / "simulation.json"
+shutil.copy(src, dst)
+
 # Device setup
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Running on: {device}")
