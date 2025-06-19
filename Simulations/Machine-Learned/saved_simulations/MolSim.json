@@ -1,0 +1,42 @@
+{
+    "SimulationType": "MolecularDynamics",
+    "NumberOfCycles": 100000,              
+    "NumberOfInitializationCycles": 1000,
+    "NumberOfEquilibrationCycles": 100,
+    "Systems": [
+      {
+        "Name": "SimBox",
+        "Type": "Box",
+        "BoxLengths": [10.0, 10.0, 10.0],
+        "ExternalTemperature": 298.0,
+        "Ensemble": "NVT",
+        "TimeStep": 0.001,
+        "OutputPDBMovie": true,
+        "SampleMovieEvery": 50,
+  
+        "ComputeMSD": true,
+        "SampleMSDEvery": 10,
+        "WriteMSDEvery": 10,
+  
+        "ComputeConventionalRDF": true,
+        "SampleConventionalRDFEvery": 10,
+        "WriteConventionalRDFEvery": 10,
+        "NumberOfBinsConventionalRDF": 75,
+        "RangeConventionalRDF":15.0,
+  
+        "ComputeVACF": true,
+        "SampleVACFEvery": 5,
+        "WriteVACFEvery": 100,
+        "NumberOfBuffersVACF": 2,
+        "BufferLengthVACF": 500
+      }
+    ],
+    "Components": [
+      {
+        "Name": "CO2",
+        "MoleculeDefinition": "CO2.json",
+        "CreateNumberOfMolecules": 5
+      }
+    ]
+  }
+  

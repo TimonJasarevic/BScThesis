@@ -1,0 +1,42 @@
+{
+  "SimulationType": "MolecularDynamics",
+  "NumberOfCycles": 10000,
+  "NumberOfInitializationCycles": 1000,
+  "NumberOfEquilibrationCycles": 10,
+  "PrintEvery": 100,
+  "Systems": [
+    {
+      "Name": "COF-300",
+      "Type": "Framework",
+      "NumberOfUnitCells": [2, 2, 2],
+      "CutOff": 10.0,
+      "ChargeMethod": "Ewald",
+      "UseChargesFrom": "PseudoAtoms",
+      "ExternalTemperature": 250.0,
+      "Ensemble": "NVT",
+      "TimeStep": 0.001,
+
+      "OutputPDBMovie": true,
+      "SampleMovieEvery": 50,
+
+      "ComputeMSD": true,
+      "SampleMSDEvery": 10,
+      "WriteMSDEvery": 10,
+
+      "ComputeConventionalRDF": true,
+      "SampleConventionalRDFEvery": 10,
+      "WriteConventionalRDFEvery": 10,
+      "NumberOfBinsConventionalRDF": 75,
+      "RangeConventionalRDF":15.0
+
+    }
+  ],
+
+  "Components": [
+    {
+      "Name": "CO2",
+      "MoleculeDefinition": "CO2.json",
+      "CreateNumberOfMolecules": 20
+    }
+  ]
+}
