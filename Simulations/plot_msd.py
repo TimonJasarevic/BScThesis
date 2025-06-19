@@ -6,13 +6,13 @@ from pathlib import Path
 # 0 = Classical only
 # 1 = Machine-Learned only
 # 2 = Both (side-by-side)
-PLOT_MODE = 1
+PLOT_MODE = 2
 SAVE_FIG = False
 # =============================
 
 base_paths = {
-    "classical": Path("Classical/msd"),
-    "ml": Path("Machine-Learned/msd")
+    "classical": Path("./Classical/msd"),
+    "ml": Path("./Machine-Learned/msd")
 }
 
 msd_file = "msd_self_CO2.s0.txt"

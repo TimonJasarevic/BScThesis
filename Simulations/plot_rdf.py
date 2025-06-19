@@ -1,27 +1,32 @@
-import matplotlib.pyplot as plt
-import numpy as np
-from scipy.ndimage import gaussian_filter1d
 from pathlib import Path
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.ndimage import gaussian_filter1d
 
 # === SELECT PLOT MODE HERE ===
 # 0 = Classical only
 # 1 = Machine-Learned only
-# 2 = Both (side-by-side in one figure)
+# 2 = Both (side-by-side)
 PLOT_MODE = 1
 SAVE_FIG = False
 # =============================
 
 base_paths = {
-    "classical": Path("Classical/conventional_rdf"),
-    "ml": Path("Machine-Learned/conventional_rdf")
+    "classical": Path("./Classical/conventional_rdf"),
+    "ml": Path("./Machine-Learned/conventional_rdf")
 }
 
 rdf_files = {
-    "C–O (CO₂–CO₂)": "rdf_C_co2_O_co2.s0.txt",
-    "O–O (CO₂–CO₂)": "rdf_O_co2_O_co2.s0.txt",
-    "C–C (CO₂–CO₂)": "rdf_C_co2_C_co2.s0.txt",
-    "C–B (CO₂–Framework)": "rdf_C_co2_B.s0.txt",
-    "O–B (CO₂–Framework)": "rdf_O_co2_B.s0.txt",
+    "C–C (CO₂–CO₂)":      "rdf_C_co2_C_co2.s0.txt",
+    "C–C (CO₂–Framework)": "rdf_C_co2_C.s0.txt",
+    "C–H (CO₂–Framework)": "rdf_C_co2_H.s0.txt",
+    "C–N (CO₂–Framework)": "rdf_C_co2_N.s0.txt",
+    "C–O (CO₂–CO₂)":       "rdf_C_co2_O_co2.s0.txt",
+    "C–O (CO₂–Framework)": "rdf_C_co2_O.s0.txt",
+    "O–C (CO₂–Framework)": "rdf_O_co2_C.s0.txt",
+    "O–N (CO₂–Framework)": "rdf_O_co2_N.s0.txt",
+    "O–O (CO₂–CO₂)":       "rdf_O_co2_O_co2.s0.txt",
+    "O–O (CO₂–Framework)": "rdf_O_co2_O.s0.txt"
 }
 
 def load_rdf_data(mode):
@@ -31,7 +36,8 @@ def load_rdf_data(mode):
         try:
             data = np.loadtxt(path)
             r = data[:, 0]
-            g_r = gaussian_filter1d(data[:, 1], sigma=1.2)
+            g_r = data[:, 1]
+            g_r = gaussian_filter1d(g_r, sigma=1.2)
             data_dict[label] = (r, g_r)
         except Exception as e:
             print(f"Could not load {path}: {e}")
