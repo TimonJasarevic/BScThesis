@@ -1,8 +1,11 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+from collections import Counter       # add at top of file
+
 
 Z2SYM = {1: "H", 6: "C", 7: "N", 8: "O"} 
+
 
 class ForceLogger:
     def __init__(self, fw_tree, fw_Z_np=None, co2_Z_all=None):
@@ -40,28 +43,54 @@ class ForceLogger:
         self.force_log["force_classical"].append(lj_net_mag)
         self.force_log["force_ani"].append(ani_net_mag)
 
-    def record_atomwise_forces(self,
-                                lj_f: np.ndarray,
-                                ani_f: np.ndarray,
-                                dist_fw: np.ndarray,
-                                nearest_idx: np.ndarray) -> None:
+    def record_atomwise_forces_by_species(
+        self,
+        lj_f: np.ndarray,              # Total classical (LJ) forces on each CO₂ atom
+        ani_f: np.ndarray,             # Total ANI-2x forces on each CO₂ atom
+        co2_pos: np.ndarray,           # Cartesian coordinates of CO₂ atoms
+        neigh_lists: list[list[int]],  # For each CO₂ atom, list of nearby framework atom indices (within 5.2 Å)
+        fw_pos: np.ndarray,            # Cartesian coordinates of framework atoms
+        box_len: np.ndarray,           # Lengths of the simulation box
+    ) -> None:
+
         if self.fw_Z_np is None or self.co2_Z_all is None:
-            raise ValueError("fw_Z_np and co2_Z_all must be provided to log atomwise forces by pair.")
+            raise ValueError("fw_Z_np and co2_Z_all must be provided.")
 
-        for i, d in enumerate(dist_fw):
-            self_Z = self.co2_Z_all[i]
-            fw_Z = self.fw_Z_np[nearest_idx[i]]
-            pair = f"{Z2SYM[self_Z]}-{Z2SYM[fw_Z]}"
+        for i, neigh in enumerate(neigh_lists):  # Loop over each CO₂ atom
+            if not neigh:
+                continue  # Skip if no neighbours found
 
-            self.log_by_pair["distance"].append(d)
-            self.log_by_pair["force"].append(np.linalg.norm(lj_f[i]))
-            self.log_by_pair["source"].append("Classical")
-            self.log_by_pair["pair"].append(pair)
+            # Count how many nearby framework atoms there are for each atomic number
+            counts_per_Z = Counter(self.fw_Z_np[neigh])
 
-            self.log_by_pair["distance"].append(d)
-            self.log_by_pair["force"].append(np.linalg.norm(ani_f[i]))
-            self.log_by_pair["source"].append("ANI")
-            self.log_by_pair["pair"].append(pair)
+            # Compute the total force magnitude on this CO₂ atom
+            f_lj_i  = np.linalg.norm(lj_f[i])
+            f_ani_i = np.linalg.norm(ani_f[i])
+
+            for j in neigh:  # Loop over all nearby framework atoms
+                fw_Z = self.fw_Z_np[j]               # Atomic number of this framework atom
+                n_spec = counts_per_Z[fw_Z]          # Number of neighbours of the same species
+
+                # Divide the force evenly across neighbours of the same type
+                f_lj_contact  = f_lj_i  / n_spec
+                f_ani_contact = f_ani_i / n_spec
+
+                # Compute the distance between the CO₂ atom and this framework atom
+                delta = co2_pos[i] - fw_pos[j]
+                delta -= box_len * np.round(delta / box_len)  # Minimum image convention
+                d = np.linalg.norm(delta)
+
+                # Create a string label like for species pairs
+                pair = f"{Z2SYM[self.co2_Z_all[i]]}-{Z2SYM[fw_Z]}"
+
+                # Store force data for both classical and ANI sources
+                for label, force_val in (("Classical", f_lj_contact),
+                                        ("ANI",       f_ani_contact)):
+                    self.log_by_pair["distance"].append(d)
+                    self.log_by_pair["force"].append(force_val)
+                    self.log_by_pair["source"].append(label)
+                    self.log_by_pair["pair"].append(pair)
+
 
     def save_csv(self, filename: str = "force_vs_distance.csv") -> None:
         df = pd.DataFrame(self.force_log)

@@ -11,6 +11,7 @@ from scipy.spatial import cKDTree  # For efficient periodic neighbour search
 import shutil
 from pathlib import Path
 from Force_Dist_helper import ForceLogger
+from torchani.utils import map2central
 
 
 # --- overwrite simulation.json with ForceSim.json ---------------------------- #
@@ -133,8 +134,13 @@ def run_step(step, record_every=10, useClassicalForces=True):
     co2_pos_np = md.getPositions()                   # Get the current CO₂ position, there is only one CO₂ molecule
     md.explicitGradients()                           # Compute classical gradients
     lj_forces = md.getForces()                       # Classical CO₂–FW forces
+
+    dist_fw, idx_fw  = fw_tree.query(co2_pos_np, k=1)    # Distances to nearest framework atom
     ani_forces = ml_co2_framework_forces(co2_pos_np)     # ML-predicted CO₂–framework forces
 
+
+    # ---------- neighbour lists for all pairs inside 5.2 Å ----------
+    neigh_lists = fw_tree.query_ball_point(co2_pos_np, r=ANI_CUTOFF)
 
     # ---------- integration ----------
     if useClassicalForces:
@@ -146,6 +152,11 @@ def run_step(step, record_every=10, useClassicalForces=True):
     # ---------- logging ----------
     if step % record_every == 0:
         logger.record_pseudomol(lj_forces, ani_forces, co2_pos_np)
+        logger.record_atomwise_forces_by_species(
+            lj_forces, ani_forces,
+            co2_pos_np, neigh_lists,
+            fw_pos0, box_len
+        )
 
 
 
@@ -158,3 +169,4 @@ for step in range(NumberOfCycles):
 
 # Final visualisation of logged data
 logger.plot_force_pseudomol()   # Plot pseudomolecular forces vs. distance
+logger.plot_force_by_pair()     # Plot atom-pair median force vs. distance
