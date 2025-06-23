@@ -142,9 +142,9 @@ class ForceLogger:
                     lw=1.8, ls="-", color=cmap[pair], label=f"ANI-2x {pair}")
 
         ax.set_yscale("log")
-        ax.set_xlabel("distance to nearest framework atom (Å)")
-        ax.set_ylabel("|F| (kJ mol$^{-1}$ Å$^{-1}$)")
-        ax.set_title("Classical & ANI-2x force magnitudes as \na function of nearest atom–framework pair distance")
+        ax.set_xlabel("distance to framework atom (Å)")
+        ax.set_ylabel("median |F| (kJ mol$^{-1}$ Å$^{-1}$)")
+        ax.set_title("Classical & ANI-2x median force magnitudes as \na function of atom–framework pair distance")
         ax.legend(ncol=2, fontsize=8)
         plt.tight_layout()
         plt.savefig(filename, dpi=400)
