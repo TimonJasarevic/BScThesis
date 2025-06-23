@@ -1,14 +1,14 @@
 {
   "MixingRule": "Lorentz-Berthelot",
   "TruncationMethod": "shifted",
-  "TailCorrections": true,
+  "TailCorrections": false,
   "PseudoAtoms": [
     {
       "name": "C_co2",
       "framework": false,
       "print_to_output": true,
       "element": "C",
-      "mass": 12.01,
+      "mass": 12.011,
       "charge": 0.6512
     },
     {
@@ -16,72 +16,72 @@
       "framework": false,
       "print_to_output": true,
       "element": "O",
-      "mass": 16.00,
+      "mass": 15.999,
       "charge": -0.3256
     },
     {
-      "name": "C",                
+      "name": "C",
       "framework": true,
       "print_to_output": false,
       "element": "C",
-      "mass": 12.01,
-      "charge": 0.53
+      "mass": 12.011,
+      "charge": 0
     },
     {
-      "name": "O",                
+      "name": "O",
       "framework": true,
       "print_to_output": false,
       "element": "O",
-      "mass": 16.00,
+      "mass": 15.999,
       "charge": 0.0
     },
     {
-      "name": "H",                
+      "name": "H",
       "framework": true,
       "print_to_output": false,
       "element": "H",
       "mass": 1.008,
-      "charge": 0.10
+      "charge": 0
     },
     {
-      "name": "N",                
+      "name": "N",
       "framework": true,
       "print_to_output": false,
       "element": "N",
-      "mass": 14.01,
-      "charge": -0.53
+      "mass": 14.007,
+      "charge": 0
     }
   ],
   "SelfInteractions": [
     {
       "name": "C_co2",
       "type": "lennard-jones",
-      "parameters": [27.0, 2.8]
+      "parameters": [27.0, 2.800]
     },
     {
       "name": "O_co2",
       "type": "lennard-jones",
-      "parameters": [79.0, 3.05]
+      "parameters": [79.0, 3.050]
     },
     {
       "name": "C",
       "type": "lennard-jones",
-      "parameters": [47.0, 3.4]
+      "parameters": [47.856, 3.473]
     },
     {
       "name": "O",
       "type": "lennard-jones",
-      "parameters": [48.0, 3.0]
+      "parameters": [48.0, 3.000]
     },
     {
       "name": "H",
       "type": "lennard-jones",
-      "parameters": [7.0, 2.5]
+      "parameters": [7.650, 2.570]
     },
     {
       "name": "N",
       "type": "lennard-jones",
-      "parameters": [36.0, 3.3]
+      "parameters": [71.400, 3.260]
     }
   ]
 }
