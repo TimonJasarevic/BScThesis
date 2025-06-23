@@ -38,14 +38,16 @@ def load_rdf_data(mode):
             r = data[:, 0]
             g_r = data[:, 1]
             g_r = gaussian_filter1d(g_r, sigma=1.2)
-            data_dict[label] = (r, g_r)
+            error = gaussian_filter1d(data[:, 2], sigma=1.2)
+            data_dict[label] = (r, g_r, error)
         except Exception as e:
             print(f"Could not load {path}: {e}")
     return data_dict
 
 def plot_single_rdf(ax, data_dict, title):
-    for label, (r, g_r) in data_dict.items():
+    for label, (r, g_r, error) in data_dict.items():
         ax.plot(r, g_r, label=label)
+        ax.fill_between(r, g_r - error, g_r + error, alpha=0.3)
     ax.set_title(title)
     ax.set_xlabel("Distance $r$ [Å]")
     ax.set_ylabel("$g(r)$")
