@@ -7,6 +7,8 @@ import numpy as np
 import raspalib
 import gc
 from scipy.spatial import cKDTree  # For efficient periodic neighbour search
+from torchani.utils import map2central
+
 
 import shutil
 from pathlib import Path
@@ -44,6 +46,7 @@ MolIdxToSpecies = {0: 6, 1: 8}              # CO₂: C = 6, O = 8
 fw_pos0   = md.getPositions(framework=True)
 fw_types  = md.getSpecies(framework=True)
 fw_Z_np   = np.vectorize(FwIdxToSpecies.get)(fw_types)
+
 
 # CO₂ atom species
 co2_types_all = md.getSpecies()
@@ -103,6 +106,9 @@ def ml_co2_framework_forces() -> np.ndarray:
 
         species = torch.cat([fw_species_sub, mol_species_t]).unsqueeze(0)
         coords  = torch.cat([fw_coords_sub, mol_coords_t]).unsqueeze(0)
+
+        # Wrap them into the central cell
+        coords = torchani.utils.map2central(cell_vectors, coords, pbc_mask)
 
         # Step 3: Evaluate energy and compute gradient (forces)
         energy = model((species, coords), cell=cell_vectors, pbc=pbc_mask).energies
